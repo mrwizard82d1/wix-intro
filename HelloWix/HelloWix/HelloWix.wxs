@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="HelloWix" Language="1033" Version="1.0.0" Manufacturer="cjl-magistri.com" 
+           UpgradeCode="D82D262F-716C-4535-8EFC-BEEFD089F933">
+    <!-- Package information needed by Windows Installer. -->
+    <Package Description="Simple Demo." Compressed="yes"/>
+
+    <!-- We are embedding our .cab files into the installer image. -->
+    <MediaTemplate EmbedCab="yes"/>
+
+    <!-- Define the directory structure for the installed image. (I'm a bit confused.) -->
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <!-- ProgramFilesFolder is a "well-known" name that expands to "Program Files..." -->
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="HelloWix"  />
+      </Directory>
+    </Directory>
+
+    <!-- Define components of installer. Note that components **never** appear in installer GUI. -->
+    <!-- Best practice is to have a single component for each physical file. -->
+    <Component Id="TextFileComponent" Directory="INSTALLFOLDER">
+      <!-- Paths are relative to the HelloWix **project** directory - not the solution root. Sigh. -->
+      <File Source="etc\foo.txt" />
+    </Component>
+
+    <!-- A feature **may** appear in the installer GUI. Features are composed of components. -->
+    <Feature Id="MainTextFile" Title="HelloWix" Level="1">
+      <ComponentRef Id="TextFileComponent"/>
+    </Feature>
+  </Product>
+</Wix>
